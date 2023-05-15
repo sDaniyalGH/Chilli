@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant/CartPage.dart';
 import 'package:restaurant/EachProduct.dart';
 import 'package:restaurant/FirstPage.dart';
 import 'package:restaurant/LoginPage.dart';
 import 'package:restaurant/mainPage.dart';
 import 'package:restaurant/menuPage.dart';
+import 'package:restaurant/test/newCartPage.dart';
+import 'package:restaurant/providers/CartProvider.dart';
 import 'HomePage.dart';
 import 'Widgets/bottomNavigation.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+      ],
+      child: MyApp(),
+    ),
+    
+  );
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

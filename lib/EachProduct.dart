@@ -1,6 +1,13 @@
+// line 269
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant/Widgets/header2.dart';
+import 'package:restaurant/providers/CartProvider.dart';
+
+import 'CartPage.dart';
+import 'model/Product.dart';
 
 class EachProduct extends StatelessWidget {
 
@@ -9,25 +16,7 @@ class EachProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffffffff),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 40,
-          decoration: BoxDecoration(
-              color: Color(0xffFFC1C1),
-              borderRadius: BorderRadius.circular(16)),
-          child: Center(
-            child: Text(
-              'افزودن به سبد خرید',
-              style: TextStyle(
-                  fontFamily: 'Vazir',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ),
+      bottomNavigationBar: AddToCartBTN(),
       body: SafeArea(
         child: Expanded(
           child: SingleChildScrollView(
@@ -250,6 +239,50 @@ class EachProduct extends StatelessWidget {
                 ),
               ),
               // ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void addToCart(Product product, BuildContext context) {
+  CartProvider cartProvider = Provider.of<CartProvider>(context, listen: false);
+  
+  cartProvider.addToCart(Product(product.id , product.title , product.imgurl , product.quantity , product.price));
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => CardPage()),
+  );
+}
+
+class AddToCartBTN extends StatelessWidget {
+  const AddToCartBTN({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: InkWell(
+        // todo: change this hardCode to 'dorostesh'
+        onTap: () => addToCart(Product(1, 'first', '_imgurl', 1 , 20000), context),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 40,
+          decoration: BoxDecoration(
+              color: Color(0xffFFC1C1),
+              borderRadius: BorderRadius.circular(16)),
+          child: Center(
+            child: Text(
+              'افزودن به سبد خرید',
+              style: TextStyle(
+                  fontFamily: 'Vazir',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),
