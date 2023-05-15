@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant/Widgets/header2.dart';
 
 class EachProduct extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,25 +42,7 @@ class EachProduct extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        IconButton(
-                          icon: Icon(CupertinoIcons.back),
-                          onPressed: () {},
-                          color: Color(0xff212435),
-                          iconSize: 24,
-                        ),
-                        IconButton(
-                          icon: Icon(CupertinoIcons.profile_circled),
-                          onPressed: () {},
-                          color: Color(0xff212435),
-                          iconSize: 24,
-                        ),
-                      ],
-                    ),
+                    Header2(),
                     SizedBox(
                       height: 10,
                     ),
@@ -272,6 +257,8 @@ class EachProduct extends StatelessWidget {
     );
   }
 }
+
+
 
 class CommentElement extends StatelessWidget {
   const CommentElement({

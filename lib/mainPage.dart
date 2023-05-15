@@ -8,6 +8,7 @@ import 'package:restaurant/Widgets/header.dart';
 import 'package:dio/dio.dart';
 import 'package:restaurant/model/MenuStoryList.dart';
 
+import 'EachProduct.dart';
 import 'Widgets/bottomNavigation.dart';
 
 class MainPage extends StatefulWidget {
@@ -136,20 +137,29 @@ class ListBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 189,
-      child: ListView.builder(
-        reverse: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return ItemBlock(
-            title: 'چیزبرگر مخصوص',
-            price: 'تومان ${replaceFarsiNumber('185000')}',
-          );
-        },
+    return InkWell(
+      onTap:() { Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EachProduct(),
+          ),
+        );
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: 189,
+        child: ListView.builder(
+          reverse: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: 10,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, index) {
+            return ItemBlock(
+              title: 'چیزبرگر مخصوص',
+              price: 'تومان ${replaceFarsiNumber('185000')}',
+            );
+          },
+        ),
       ),
     );
   }
