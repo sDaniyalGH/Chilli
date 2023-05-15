@@ -1,14 +1,23 @@
+// todo : line 80
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:restaurant/Widgets/header.dart';
+import 'package:dio/dio.dart';
+import 'package:restaurant/model/MenuStoryList.dart';
 
 import 'Widgets/bottomNavigation.dart';
 
-class MainPage extends StatelessWidget {
-  
+class MainPage extends StatefulWidget {
+  MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
   final List<String> titles = [
     'منو',
     'منو',
@@ -21,30 +30,71 @@ class MainPage extends StatelessWidget {
     'منو',
     'منو'
   ];
-  MainPage({super.key});
+
+  late Future<List<MenuStoryList>> menuStoryList;
+
+  Future<List<MenuStoryList>> getDateStoryList() async {
+    List<MenuStoryList> model = [];
+
+    Dio dio = Dio();
+    final response =
+        await dio.get('https://jsonplaceholder.typicode.com/photos');
+    if (response.statusCode == 200) {
+      List<dynamic> data = response.data;
+      for (var item in data) {
+        var id = item['id'];
+        String title = item['title'];
+        String imgurl = item['thumbnailUrl'];
+        // Display the title and photo
+        // print('Title: $title');
+        // print('Photo URL: $imgurl');
+        model.add(MenuStoryList(id, title, imgurl));
+      }
+      return model;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    menuStoryList = getDateStoryList();
+  }
 
   @override
   Widget build(BuildContext context) {
-      return SafeArea(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-            child: Header(),
-          ),
-          SearchBar(),
-          MenuStory(titles: titles),
-          Block1(title: 'پر فروش ترین ها'),
-          Block1(title: 'پیشنهادی'),
-        ]),
-      ));
+    return SafeArea(
+        child: SingleChildScrollView(
+      child: Column(children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+          child: Header(),
+        ),
+        SearchBar(),
+        FutureBuilder(
+            future: menuStoryList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<MenuStoryList> model = snapshot.data!;
+                return MenuStory(models: model);
+              } else {
+                // change it later
+                return Container();
+              }
+            }),
+        Block1(title: 'پر فروش ترین ها'),
+        Block1(title: 'پیشنهادی'),
+      ]),
+    ));
   }
 }
 
 class Block1 extends StatelessWidget {
   final String title;
   const Block1({
-    super.key, required this.title,
+    super.key,
+    required this.title,
   });
 
   @override
@@ -103,7 +153,7 @@ class ListBlock extends StatelessWidget {
       ),
     );
   }
-  
+
   String replaceFarsiNumber(String input) {
     const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const farsi = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -216,11 +266,13 @@ class SearchBar extends StatelessWidget {
 }
 
 class MenuStory extends StatelessWidget {
-  final List<String> titles;
+  //final List<String> titles;
+  final List<MenuStoryList> models;
 
   const MenuStory({
     super.key,
-    required this.titles,
+    //required this.titles,
+    required this.models,
   });
 
   @override
@@ -234,7 +286,10 @@ class MenuStory extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return ItemMenuStory(title: titles[index]);
+            return ItemMenuStory(
+              title: models[index].title,
+              imgurl: models[index].imgurl,
+            );
           }),
     );
   }
@@ -242,10 +297,12 @@ class MenuStory extends StatelessWidget {
 
 class ItemMenuStory extends StatelessWidget {
   final String title;
+  final String imgurl;
 
   const ItemMenuStory({
     super.key,
     required this.title,
+    required this.imgurl,
   });
 
   @override
@@ -254,7 +311,9 @@ class ItemMenuStory extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16),
       child: Column(
         children: [
-          ItemNormal(), // for clicked and unclicked
+          ItemNormal(
+            imgurl: imgurl,
+          ), // for clicked and unclicked
           Text(title)
         ],
       ),
@@ -263,8 +322,10 @@ class ItemMenuStory extends StatelessWidget {
 }
 
 class ItemNormal extends StatelessWidget {
+  final String imgurl;
   const ItemNormal({
     super.key,
+    required this.imgurl,
   });
 
   @override
@@ -274,11 +335,17 @@ class ItemNormal extends StatelessWidget {
       height: 49,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(32), color: Color(0xffF1F1F1)),
-      child: Image.asset(
-        'assets/img/icons/item1.png',
+      child: Image.network(
+        imgurl,
         width: 32,
         height: 32,
+        fit: BoxFit.cover,
       ),
+      // child: Image.asset(
+      //   'assets/img/icons/item1.png',
+      //   width: 32,
+      //   height: 32,
+      // ),
     );
   }
 }
