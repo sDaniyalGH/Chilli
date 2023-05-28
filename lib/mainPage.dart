@@ -7,7 +7,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:restaurant/Widgets/header.dart';
 import 'package:dio/dio.dart';
 import 'package:restaurant/model/MenuStoryList.dart';
-
 import 'EachProduct.dart';
 import 'Widgets/bottomNavigation.dart';
 
@@ -60,6 +59,8 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+    //List<MenuStoryList> model = [];
+    //menuStoryList = model;
     menuStoryList = getDateStoryList();
   }
 
