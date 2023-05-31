@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:restaurant/Widgets/MenuBar.dart';
 import 'package:restaurant/Widgets/header.dart';
 import 'package:dio/dio.dart';
 import 'package:restaurant/model/MenuStoryList.dart';
@@ -33,59 +34,30 @@ class _MainPageState extends State<MainPage> {
 
   late Future<List<MenuStoryList>> menuStoryList;
 
-  Future<List<MenuStoryList>> getDateStoryList() async {
-    List<MenuStoryList> model = [];
-
-    Dio dio = Dio();
-    final response =
-        await dio.get('https://jsonplaceholder.typicode.com/photos');
-    if (response.statusCode == 200) {
-      List<dynamic> data = response.data;
-      for (var item in data) {
-        var id = item['id'];
-        String title = item['title'];
-        String imgurl = item['thumbnailUrl'];
-        // Display the title and photo
-        // print('Title: $title');
-        // print('Photo URL: $imgurl');
-        model.add(MenuStoryList(id, title, imgurl));
-      }
-      return model;
-    } else {
-      throw Exception('Failed to fetch data');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    menuStoryList = getDateStoryList();
+    menuStoryList = MenuBaar.getDateStoryList();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: SingleChildScrollView(
-        child: Column(children: [
-        Header(),
-        SearchBar(),
-        FutureBuilder(
-            future: menuStoryList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<MenuStoryList> model = snapshot.data!;
-                return MenuStory(models: model);
-              } else {
-                // change it later
-                return Container();
-              }
-            }),
-        Block1(title: 'پر فروش ترین ها'),
-        Block1(title: 'پیشنهادی'),
+        child: Column(
+          children: [
+            Header(),
+            SearchBar(),
+            MenuBaar(menuStoryList: menuStoryList ),
+            Block1(title: 'پر فروش ترین ها'),
+            Block1(title: 'پیشنهادی')
+          ,
       ]),
     ));
   }
 }
+
+
 
 class Block1 extends StatelessWidget {
   final String title;
@@ -272,87 +244,4 @@ class SearchBar extends StatelessWidget {
   }
 }
 
-class MenuStory extends StatelessWidget {
-  //final List<String> titles;
-  final List<MenuStoryList> models;
 
-  const MenuStory({
-    super.key,
-    //required this.titles,
-    required this.models,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 80,
-      //color: Colors.red,
-      child: ListView.builder(
-          itemCount: 10,
-          scrollDirection: Axis.horizontal,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return ItemMenuStory(
-              title: models[index].title,
-              imgurl: models[index].imgurl,
-            );
-          }),
-    );
-  }
-}
-
-class ItemMenuStory extends StatelessWidget {
-  final String title;
-  final String imgurl;
-
-  const ItemMenuStory({
-    super.key,
-    required this.title,
-    required this.imgurl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: Column(
-        children: [
-          ItemNormal(
-            imgurl: imgurl,
-          ), // for clicked and unclicked
-          Text(title)
-        ],
-      ),
-    );
-  }
-}
-
-class ItemNormal extends StatelessWidget {
-  final String imgurl;
-  const ItemNormal({
-    super.key,
-    required this.imgurl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 49,
-      height: 49,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32), color: Color(0xffF1F1F1)),
-      child: Image.network(
-        imgurl,
-        width: 32,
-        height: 32,
-        fit: BoxFit.cover,
-      ),
-      // child: Image.asset(
-      //   'assets/img/icons/item1.png',
-      //   width: 32,
-      //   height: 32,
-      // ),
-    );
-  }
-}

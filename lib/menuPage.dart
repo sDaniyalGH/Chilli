@@ -2,12 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:restaurant/Widgets/MenuBar.dart';
 import 'package:restaurant/Widgets/header.dart';
+import 'package:restaurant/model/MenuStoryList.dart';
 
 import 'Widgets/bottomNavigation.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+
+
+  late Future<List<MenuStoryList>> menuStoryList;
+
+  @override
+  void initState() {
+    super.initState();
+    menuStoryList = MenuBaar.getDateStoryList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +32,7 @@ class MenuPage extends StatelessWidget {
         child: SingleChildScrollView(
       child: Column(children: [
        Header(),
+       MenuBaar(menuStoryList: menuStoryList),
         // header ha ro az mainPage begir biar inja
         // Expanded(
         SizedBox(
