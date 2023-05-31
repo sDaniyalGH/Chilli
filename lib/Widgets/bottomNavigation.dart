@@ -27,22 +27,25 @@ class BottomNavigation extends StatelessWidget {
               selected: 1,
               onTaps: () => onTap(0),
             ),
-            Container(
-              width: 47,
-              height: 47,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xffFFC1C1),
-              ),
-              child: Center(
-                child: Image.asset('assets/img/icons/shop.png'),
+            InkWell(
+              onTap: () => onTap(1),
+              child: Container(
+                width: 47,
+                height: 47,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xffFFC1C1),
+                ),
+                child: Center(
+                  child: Image.asset('assets/img/icons/shop.png'),
+                ),
               ),
             ),
             ItemNavigationBar(
               title: 'منو',
               type: 3,
               selected: 3,
-              onTaps: () => onTap(1),
+              onTaps: () => onTap(2),
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant/CartPage.dart';
 import 'package:restaurant/mainPage.dart';
 import 'package:restaurant/menuPage.dart';
 
@@ -27,6 +28,7 @@ class _FirstPageState extends State<FirstPage> {
           index: selected,
           children: [
             MainPage(),
+            CardPage(),
             MenuPage(),
           ],
     ));
