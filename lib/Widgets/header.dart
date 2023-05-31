@@ -7,42 +7,45 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //crossAxisAlignment: CrossAxisAlignment.center,
-      //mainAxisSize: MainAxisSize.max,
-      children: [
-        IconButton(
-          icon: Icon(Icons.account_circle),
-          onPressed: () {},
-          color: Color(0xff212435),
-          iconSize: 24,
-        ),
-        Column(
-          children: [
-            Text(
-              "خوش آمدید",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-                fontFamily: 'Vazir',
+    return Padding(
+       padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //crossAxisAlignment: CrossAxisAlignment.center,
+        //mainAxisSize: MainAxisSize.max,
+        children: [
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {},
+            color: Color(0xff212435),
+            iconSize: 24,
+          ),
+          Column(
+            children: [
+              Text(
+                "خوش آمدید",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                  fontFamily: 'Vazir',
+                ),
               ),
-            ),
-            SizedBox(
-              height: 2,
-            ),
-            Text(
-              "کاوه حاجی نجف",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Vazir',
-                fontSize: 14,
-                color: Colors.black,
+              SizedBox(
+                height: 2,
               ),
-            ),
-          ],
-        ),
-      ],
+              Text(
+                "کاوه حاجی نجف",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Vazir',
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

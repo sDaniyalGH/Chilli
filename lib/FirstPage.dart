@@ -13,7 +13,7 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  int selected = 0;
+  int selected = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

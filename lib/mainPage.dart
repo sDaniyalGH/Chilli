@@ -59,8 +59,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    //List<MenuStoryList> model = [];
-    //menuStoryList = model;
     menuStoryList = getDateStoryList();
   }
 
@@ -68,11 +66,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: SingleChildScrollView(
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-          child: Header(),
-        ),
+        child: Column(children: [
+        Header(),
         SearchBar(),
         FutureBuilder(
             future: menuStoryList,
@@ -138,8 +133,9 @@ class ListBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-       return InkWell(
-      onTap:() { Navigator.push(
+    return InkWell(
+      onTap: () {
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => EachProduct(),
